@@ -1,4 +1,5 @@
-create database if not exists Bright_Box_DB;
+create database if not exists bright_box_db;
+
 
 CREATE TABLE if not exists `bright_box_db`.`bright_box` (
   `id` INT NOT NULL AUTO_INCREMENT,
