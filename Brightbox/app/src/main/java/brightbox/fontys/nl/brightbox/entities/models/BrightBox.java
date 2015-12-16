@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.brightbox.entities.models;
+package brightbox.fontys.nl.brightbox.entities.models;
 
 /**
  *
@@ -16,8 +16,14 @@ public class BrightBox{
     private String identifier;
 
 
-    public BrightBox() {
+    public BrightBox(Integer id, String name, String description, String identifier) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.identifier = identifier;
     }
+
+
 
     public BrightBox(Integer id) {
         this.id = id;

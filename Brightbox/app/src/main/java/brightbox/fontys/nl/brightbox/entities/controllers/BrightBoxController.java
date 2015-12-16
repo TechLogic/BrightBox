@@ -3,16 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.brightbox.entities.controllers;
+package brightbox.fontys.nl.brightbox.entities.controllers;
 
 
 import android.os.AsyncTask;
+import android.util.JsonReader;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import brightbox.fontys.nl.brightbox.entities.models.BrightBox;
 
 /**
  *
@@ -22,6 +29,7 @@ public class BrightBoxController{
 
     private static BrightBoxController INSTANCE = new BrightBoxController();
     private final String  url = "http://brightbox.ddns.net:8000/api/bright_box";
+
     private BrightBoxController(){
     }
 
@@ -33,6 +41,12 @@ public class BrightBoxController{
         new CallAPI().execute(url);
     }
 
+    public void findById(int id){
+        new CallAPI().execute(url+"?id="+id);
+    }
+
+
+
 
     private class CallAPI extends AsyncTask<String, String, String> {
 
@@ -43,6 +57,7 @@ public class BrightBoxController{
             String resultToDisplay = "";
 
             InputStream in = null;
+            String result = "Empty";
 
             // HTTP Get
             try {
@@ -52,7 +67,8 @@ public class BrightBoxController{
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
                 in = new BufferedInputStream(urlConnection.getInputStream());
-
+                JsonReader reader = new JsonReader(new InputStreamReader(in));
+                parseBrightBoxJSON(reader);
             } catch (Exception e ) {
 
                Log.e("JSON",e.getMessage());
@@ -60,12 +76,72 @@ public class BrightBoxController{
                 return e.getMessage();
 
             }
-            Log.d("JSON",resultToDisplay);
+            Log.d("JSON", result);
             return resultToDisplay;
         }
 
-
+        private List<BrightBox> parseBrightBoxJSON(JsonReader reader) throws IOException{
+            String result;
+            reader.beginObject();
+            while(reader.hasNext()){
+                String name = reader.nextName();
+                if(name.equals("result")){
+                    result = reader.nextString();
+                    //TODO throw Exception if not successful
+                }else if ( name.equals("json")){
+                    return parseBrightBox(reader);
+                }else{
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+            return new ArrayList<>();
         }
+
+        private List<BrightBox> parseBrightBox(JsonReader reader) throws IOException {
+            List<BrightBox> list = new ArrayList<>();
+            reader.beginArray();
+
+            while(reader.hasNext()){
+                reader.beginObject();
+                int id = -1;
+                String box_name = null;
+                String description = null;
+                String identifier = null;
+                while(reader.hasNext()){
+                    String name = reader.nextName();
+                    switch(name){
+                        case "id":{
+                    id = reader.nextInt();
+                            break;
+                        }
+                        case "name":{
+                            box_name = reader.nextString();
+                            break;
+                        }
+                        case "description":{
+                            description = reader.nextString();
+                            break;
+                        }
+                        case "identifier":{
+                            identifier = reader.nextString();
+                            break;
+                        }
+                        default: reader.skipValue();
+                    }
+                }
+                if(id >= 0 && description  != null && box_name != null && identifier != null){
+                    BrightBox box = new BrightBox(id,box_name,description,identifier);
+                    list.add(box);
+                }
+                reader.endObject();
+            }
+            reader.endArray();
+            return list;
+        }
+
+
+    }
 
         protected void onPostExecute(String result) {
 

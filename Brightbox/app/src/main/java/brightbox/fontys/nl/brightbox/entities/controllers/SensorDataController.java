@@ -3,17 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.brightbox.entities.controllers;
-
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.DatabaseTable;
-
-import java.io.Serializable;
-import java.sql.SQLException;
-
-import nl.fontys.brightbox.entities.models.SensorData;
+package brightbox.fontys.nl.brightbox.entities.controllers;
 
 /**
  *
@@ -22,9 +12,6 @@ import nl.fontys.brightbox.entities.models.SensorData;
 
 public class SensorDataController{
 
-    private final Dao<SensorData,?> dao;
 
-    public SensorDataController(ConnectionSource source) throws SQLException {
-        this.dao = DaoManager.createDao(source, SensorData.class);
-    }
+
 }
