@@ -6,11 +6,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.vuzix.hardware.GestureSensor;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import brightbox.fontys.nl.brightbox.entities.controllers.BrightBoxController;
 import brightbox.fontys.nl.brightbox.entities.controllers.SensorDataController;
@@ -35,9 +39,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
        BrightBoxController controller = BrightBoxController.getINSTANCE();
-       controller.findAll();
+        try {
+            controller.findAll();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SensorDataController sensorDataController = SensorDataController.getINSTANCE();
-        sensorDataController.findAll();
+        try {
+       List<SensorData> data =     sensorDataController.findAll();
+            Log.d("Test","Test");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

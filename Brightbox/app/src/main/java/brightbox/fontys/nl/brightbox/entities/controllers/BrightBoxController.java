@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import brightbox.fontys.nl.brightbox.entities.models.BrightBox;
 
@@ -37,21 +38,21 @@ public class BrightBoxController{
         return INSTANCE;
     }
 
-    public void findAll() {
-        new CallAPI().execute(url);
+    public List<BrightBox> findAll() throws ExecutionException, InterruptedException {
+        return new CallAPI().execute(url).get();
     }
 
-    public void findById(int id){
-        new CallAPI().execute(url+"?id="+id);
+    public List<BrightBox> findById(int id) throws ExecutionException, InterruptedException {
+     return new CallAPI().execute(url+"?id="+id).get();
     }
 
 
 
 
-    private class CallAPI extends AsyncTask<String, String, String> {
+    private class CallAPI extends AsyncTask<String, String, List<BrightBox>> {
 
         @Override
-        protected String doInBackground(String... params) {
+        protected List<BrightBox> doInBackground(String... params) {
             String urlString=params[0]; // URL to call
 
             String resultToDisplay = "";
@@ -68,16 +69,13 @@ public class BrightBoxController{
 
                 in = new BufferedInputStream(urlConnection.getInputStream());
                 JsonReader reader = new JsonReader(new InputStreamReader(in));
-                parseBrightBoxJSON(reader);
+               return  parseBrightBoxJSON(reader);
             } catch (Exception e ) {
 
                Log.e("JSON",e.getMessage());
 
-                return e.getMessage();
-
             }
-            Log.d("JSON", result);
-            return resultToDisplay;
+            return  new ArrayList<>();
         }
 
         private List<BrightBox> parseBrightBoxJSON(JsonReader reader) throws IOException{

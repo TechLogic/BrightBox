@@ -21,7 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import brightbox.fontys.nl.brightbox.entities.models.BrightBox;
 import brightbox.fontys.nl.brightbox.entities.models.SensorData;
 
 /**
@@ -42,21 +44,26 @@ public class SensorDataController{
         return INSTANCE;
     }
 
-    public void findAll() {
-        new CallAPI().execute(url);
+    public List<SensorData> findAll() throws ExecutionException, InterruptedException {
+        CallAPI api = new CallAPI();
+            return api.execute(url).get();
     }
 
-    public void findById(int id){
-        new CallAPI().execute(url+"?id="+id);
+    public List<SensorData> findById(int id) throws ExecutionException, InterruptedException {
+       return new CallAPI().execute(url + "?id=" + id).get();
+    }
+
+    public List<SensorData> findByBrightBox(BrightBox box) throws ExecutionException, InterruptedException {
+       return new CallAPI().execute(url + "?fk_bright_box=" + box.getId()).get();
     }
 
 
 
 
-    private class CallAPI extends AsyncTask<String, String, String> {
+    private class CallAPI extends AsyncTask<String, String, List<SensorData>> {
 
         @Override
-        protected String doInBackground(String... params) {
+        protected List<SensorData> doInBackground(String... params) {
             String urlString=params[0]; // URL to call
 
             String resultToDisplay = "";
@@ -73,16 +80,11 @@ public class SensorDataController{
 
                 in = new BufferedInputStream(urlConnection.getInputStream());
                 JsonReader reader = new JsonReader(new InputStreamReader(in));
-                parseBrightBoxJSON(reader);
+               return parseBrightBoxJSON(reader);
             } catch (Exception e ) {
-
                 Log.e("JSON", e.getMessage());
-
-                return e.getMessage();
-
             }
-            Log.d("JSON", result);
-            return resultToDisplay;
+            return new ArrayList<>();
         }
 
         private List<SensorData> parseBrightBoxJSON(JsonReader reader) throws IOException {
@@ -177,8 +179,20 @@ public class SensorDataController{
                 }
                 if(id >= 0 && timestamp != null && fk_bright_box >=0 && vega != Double.NaN && airTemp != Double.NaN && humidity != Double.NaN && ph != Double.NaN && ec != Double.NaN && waterTemp != Double.NaN){
                     SensorData sensorData = new SensorData(id,timestamp,bloom,vega,grow,airTemp,humidity,ph,ec,waterTemp);
-                // BrightBox box =   BrightBoxController.getINSTANCE().findById(fk_bright_box);
-                //sensorData.setFkBrightBox(box);
+                    BrightBox box = null;
+                    try {
+                        List<BrightBox> l  = BrightBoxController.getINSTANCE().findById(fk_bright_box);
+                        if(l.size() > 0) {
+                            sensorData.setFkBrightBox(l.get(0));
+                        }else{
+                            //TODO throw exeception
+                        }
+
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
                     list.add(sensorData);
                 }
