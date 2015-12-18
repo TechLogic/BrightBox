@@ -181,12 +181,8 @@ public class SensorDataController{
                     SensorData sensorData = new SensorData(id,timestamp,bloom,vega,grow,airTemp,humidity,ph,ec,waterTemp);
                     BrightBox box = null;
                     try {
-                        List<BrightBox> l  = BrightBoxController.getINSTANCE().findById(fk_bright_box);
-                        if(l.size() > 0) {
-                            sensorData.setFkBrightBox(l.get(0));
-                        }else{
-                            //TODO throw exeception
-                        }
+                        box = BrightBoxController.getINSTANCE().findById(fk_bright_box);
+                        sensorData.setFkBrightBox(box);
 
                     } catch (ExecutionException e) {
                         e.printStackTrace();

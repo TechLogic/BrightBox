@@ -17,7 +17,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import brightbox.fontys.nl.brightbox.entities.models.BrightBox;
@@ -30,7 +32,7 @@ public class BrightBoxController{
 
     private static BrightBoxController INSTANCE = new BrightBoxController();
     private final String  url = "http://brightbox.ddns.net:8000/api/bright_box";
-
+    private Map<Integer,BrightBox> cache = new HashMap<>();
     private BrightBoxController(){
     }
 
@@ -42,8 +44,17 @@ public class BrightBoxController{
         return new CallAPI().execute(url).get();
     }
 
-    public List<BrightBox> findById(int id) throws ExecutionException, InterruptedException {
-     return new CallAPI().execute(url+"?id="+id).get();
+    public BrightBox findById(int id) throws ExecutionException, InterruptedException {
+        if(cache.containsKey(id)){
+            return cache.get(id);
+        }else {
+            List<BrightBox> list =  new CallAPI().execute(url + "?id=" + id).get();
+            if(list.size() > 0){
+                return list.get(0);
+            }else{
+                return null;
+            }
+        }
     }
 
 
@@ -130,6 +141,7 @@ public class BrightBoxController{
                 }
                 if(id >= 0 && description  != null && box_name != null && identifier != null){
                     BrightBox box = new BrightBox(id,box_name,description,identifier);
+                    cache.put(id,box);
                     list.add(box);
                 }
                 reader.endObject();
