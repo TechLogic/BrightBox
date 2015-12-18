@@ -6,6 +6,7 @@
 package brightbox.fontys.nl.brightbox.entities.models;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -17,16 +18,16 @@ public class SensorData {
 
     private Integer id;
 
-    private Date timestamp;
-    private BigDecimal bloom;
-    private BigDecimal vega;
-    private BigDecimal grow;
+    private Timestamp timestamp;
+    private Double bloom;
+    private Double vega;
+    private Double grow;
 
-    private BigDecimal airTemperatur;
-    private BigDecimal humidity;
-    private BigDecimal phValue;
-    private BigDecimal ecValue;
-    private BigDecimal waterTemperatur;
+    private Double airTemperatur;
+    private Double humidity;
+    private Double phValue;
+    private Double ecValue;
+    private Double waterTemperatur;
     private BrightBox fkBrightBox;
 
     public SensorData() {
@@ -36,7 +37,7 @@ public class SensorData {
         this.id = id;
     }
 
-    public SensorData(Integer id, Date timestamp, BigDecimal bloom, BigDecimal vega, BigDecimal grow, BigDecimal airTemperatur, BigDecimal humidity, BigDecimal phValue, BigDecimal ecValue, BigDecimal waterTemperatur) {
+    public SensorData(Integer id,  Timestamp timestamp, Double bloom, Double vega, Double grow, Double airTemperatur, Double humidity, Double phValue, Double ecValue, Double waterTemperatur) {
         this.id = id;
         this.timestamp = timestamp;
         this.bloom = bloom;
@@ -57,75 +58,75 @@ public class SensorData {
         this.id = id;
     }
 
-    public Date getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
-    public BigDecimal getBloom() {
+    public Double getBloom() {
         return bloom;
     }
 
-    public void setBloom(BigDecimal bloom) {
+    public void setBloom(Double bloom) {
         this.bloom = bloom;
     }
 
-    public BigDecimal getVega() {
+    public Double getVega() {
         return vega;
     }
 
-    public void setVega(BigDecimal vega) {
+    public void setVega(Double vega) {
         this.vega = vega;
     }
 
-    public BigDecimal getGrow() {
+    public Double getGrow() {
         return grow;
     }
 
-    public void setGrow(BigDecimal grow) {
+    public void setGrow(Double grow) {
         this.grow = grow;
     }
 
-    public BigDecimal getAirTemperatur() {
+    public Double getAirTemperatur() {
         return airTemperatur;
     }
 
-    public void setAirTemperatur(BigDecimal airTemperatur) {
+    public void setAirTemperatur(Double airTemperatur) {
         this.airTemperatur = airTemperatur;
     }
 
-    public BigDecimal getHumidity() {
+    public Double getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(BigDecimal humidity) {
+    public void setHumidity(Double humidity) {
         this.humidity = humidity;
     }
 
-    public BigDecimal getPhValue() {
+    public Double getPhValue() {
         return phValue;
     }
 
-    public void setPhValue(BigDecimal phValue) {
+    public void setPhValue(Double phValue) {
         this.phValue = phValue;
     }
 
-    public BigDecimal getEcValue() {
+    public Double getEcValue() {
         return ecValue;
     }
 
-    public void setEcValue(BigDecimal ecValue) {
+    public void setEcValue(Double ecValue) {
         this.ecValue = ecValue;
     }
 
-    public BigDecimal getWaterTemperatur() {
+    public Double getWaterTemperatur() {
         return waterTemperatur;
     }
 
-    public void setWaterTemperatur(BigDecimal waterTemperatur) {
+    public void setWaterTemperatur(Double waterTemperatur) {
         this.waterTemperatur = waterTemperatur;
     }
 

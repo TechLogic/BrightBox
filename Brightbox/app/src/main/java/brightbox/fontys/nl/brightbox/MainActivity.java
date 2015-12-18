@@ -13,6 +13,8 @@ import android.view.View;
 import com.vuzix.hardware.GestureSensor;
 
 import brightbox.fontys.nl.brightbox.entities.controllers.BrightBoxController;
+import brightbox.fontys.nl.brightbox.entities.controllers.SensorDataController;
+import brightbox.fontys.nl.brightbox.entities.models.SensorData;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
        BrightBoxController controller = BrightBoxController.getINSTANCE();
        controller.findAll();
-
+        SensorDataController sensorDataController = SensorDataController.getINSTANCE();
+        sensorDataController.findAll();
     }
 
     @Override
