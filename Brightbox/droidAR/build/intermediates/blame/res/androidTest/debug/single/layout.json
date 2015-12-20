@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/layout/defaultlistitemview.xml",
+        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/layout/defaultlistitemview.xml"
+    },
+    {
+        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/layout/defaultlayout.xml",
+        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/layout/defaultlayout.xml"
+    },
+    {
+        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/layout/demoselector.xml",
+        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/layout/demoselector.xml"
+    },
+    {
+        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/layout/infoscreen.xml",
+        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/layout/infoscreen.xml"
+    },
+    {
+        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/layout/basicdialog.xml",
+        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/layout/basicdialog.xml"
+    },
+    {
+        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/layout/test_layout.xml",
+        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/layout/test_layout.xml"
+    },
+    {
+        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/layout/action_wait_for_accuracy_view.xml",
+        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/layout/action_wait_for_accuracy_view.xml"
+    },
+    {
+        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/layout/errorreports.xml",
+        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/layout/errorreports.xml"
+    }
+]

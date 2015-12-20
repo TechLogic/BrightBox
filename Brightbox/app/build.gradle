@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -28,4 +29,5 @@ dependencies {
     compile files('libs/vuzix_speech.jar')
     compile files('libs/vuzix_camera.jar')
     compile files('libs/com.stonestreetone.bluetopiapm.jar')
+    compile project(':droidAR')
 }

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/src/main/jniLibs"/></dataSet><dataSet config="debug"><source path="/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/src/debug/jniLibs"/></dataSet></merger>

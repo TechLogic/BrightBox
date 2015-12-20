@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.vuzix.hardware.GestureSensor;
 
@@ -19,24 +20,38 @@ import java.util.concurrent.ExecutionException;
 import brightbox.fontys.nl.brightbox.entities.controllers.BrightBoxController;
 import brightbox.fontys.nl.brightbox.entities.controllers.SensorDataController;
 import brightbox.fontys.nl.brightbox.entities.models.SensorData;
+import gl.GL1Renderer;
+import gl.GLFactory;
+import system.ArActivity;
+import system.DefaultARSetup;
+import util.Vec;
+import worldData.World;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Button b = new Button(this);
+        b.setText("Click me to Start the AR Action");
+        b.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View arg0) {
+                ArActivity.startWithSetup(MainActivity.this, new DefaultARSetup() {
+
+                    @Override
+                    public void addObjectsTo(GL1Renderer renderer, World world,
+                                             GLFactory objectFactory) {
+                        world.add(objectFactory.newSolarSystem(new Vec(10, 0, 0)));
+                    }
+
+                });
             }
         });
+
+        setContentView(b);
 
        BrightBoxController controller = BrightBoxController.getINSTANCE();
         try {
