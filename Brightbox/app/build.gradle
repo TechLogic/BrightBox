@@ -18,7 +18,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
+
+android {
+    packagingOptions {
+        exclude 'AndroidManifest.xml'
+    }
+}
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -29,5 +37,5 @@ dependencies {
     compile files('libs/vuzix_speech.jar')
     compile files('libs/vuzix_camera.jar')
     compile files('libs/com.stonestreetone.bluetopiapm.jar')
-    compile project(':droidAR')
+    compile project(':arMarker')
 }

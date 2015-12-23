@@ -127,7 +127,7 @@ public class TechDemoLauncher extends Activity {
 		// execute all tests defined in the ARTestSuite:
 		try {
 
-			system.EventManager.getInstance().registerListeners(this, true);
+			EventManager.getInstance().registerListeners(this, true);
 
 			// new ThreadTest().run();
 			// new MemoryAllocationTests().run();

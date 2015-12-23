@@ -1,1 +1,1 @@
-include ':app', ':droidAR'
+include ':app', ':droidAR', 'arMarker'

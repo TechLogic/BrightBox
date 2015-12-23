@@ -136,20 +136,20 @@
         "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/drawable/icon4.png"
     },
     {
-        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/drawable/up.png",
-        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/drawable/up.png"
-    },
-    {
         "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/drawable/infogray.png",
         "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/drawable/infogray.png"
     },
     {
-        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/drawable/logo.png",
-        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/drawable/logo.png"
+        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/drawable/up.png",
+        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/drawable/up.png"
     },
     {
         "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/drawable/penguin64.png",
         "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/drawable/penguin64.png"
+    },
+    {
+        "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/drawable/logo.png",
+        "source": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/bundles/debug/res/drawable/logo.png"
     },
     {
         "merged": "/home/techlogic/Dokumente/OpenGL/BrightBox/Brightbox/droidAR/build/intermediates/res/merged/androidTest/debug/drawable/incorrectcirclered.png",

@@ -2,55 +2,28 @@ package brightbox.fontys.nl.brightbox;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
 import com.vuzix.hardware.GestureSensor;
-
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
 import brightbox.fontys.nl.brightbox.entities.controllers.BrightBoxController;
 import brightbox.fontys.nl.brightbox.entities.controllers.SensorDataController;
 import brightbox.fontys.nl.brightbox.entities.models.SensorData;
-import gl.GL1Renderer;
-import gl.GLFactory;
+import brightbox.fontys.nl.brightbox.marker.MultiMarkerSetup;
 import system.ArActivity;
-import system.DefaultARSetup;
-import util.Vec;
-import worldData.World;
+import system.Setup;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Button b = new Button(this);
-        b.setText("Click me to Start the AR Action");
-        b.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                ArActivity.startWithSetup(MainActivity.this, new DefaultARSetup() {
-
-                    @Override
-                    public void addObjectsTo(GL1Renderer renderer, World world,
-                                             GLFactory objectFactory) {
-                        world.add(objectFactory.newSolarSystem(new Vec(10, 0, 0)));
-                    }
-
-                });
-            }
-        });
-
+        Button b = generateStartButton(new MultiMarkerSetup());
         setContentView(b);
 
        BrightBoxController controller = BrightBoxController.getINSTANCE();
@@ -71,6 +44,21 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+    private Button generateStartButton(final Setup setup) {
+        Button b = new Button(this);
+        b.setText("Load " + setup.getClass().getName());
+        b.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                ArActivity.startWithSetup(MainActivity.this, setup);
+            }
+        });
+        return b;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
