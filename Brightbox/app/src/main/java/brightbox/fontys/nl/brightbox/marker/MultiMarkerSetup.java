@@ -1,14 +1,15 @@
 package brightbox.fontys.nl.brightbox.marker;
 
+import brightbox.fontys.nl.brightbox.entities.controllers.BrightBoxController;
+import brightbox.fontys.nl.brightbox.entities.controllers.SensorDataController;
+import brightbox.fontys.nl.brightbox.entities.models.BrightBox;
+import brightbox.fontys.nl.brightbox.entities.models.SensorData;
 import geo.GeoObj;
-import gl.Color;
 import gl.CustomGLSurfaceView;
 import gl.GL1Renderer;
 import gl.GLCamera;
 import gl.GLFactory;
-import gl.GLRenderer;
 import gl.scenegraph.MeshComponent;
-import gl.scenegraph.Shape;
 import gui.GuiSetup;
 import markerDetection.MarkerDetectionSetup;
 import markerDetection.MarkerObjectMap;
@@ -22,32 +23,21 @@ import actions.Action;
 import actions.ActionMoveCameraBuffered;
 import actions.ActionRotateCameraBuffered;
 import android.app.Activity;
+import android.util.Log;
 
-import commands.Command;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 	private GLCamera camera;
 	private World world;
-	private MeshComponent mesh1;
-	private MeshComponent mesh2;
 
 	@Override
 	public void _a_initFieldsIfNecessary() {
 		camera = new GLCamera(new Vec(0, 0, 10));
 		world = new World(camera);
-		mesh1 = new Shape();
-
-		mesh1.addChild(GLFactory.getInstance().newCoordinateSystem());
-		// mesh.add(GLFactory.getInstance().newCircle(new Color(0, 0, 1,
-		// 0.6f)));
-		mesh1.addChild(GLFactory.getInstance().newCube());
-
-		mesh2 = new Shape();
-		mesh2.addChild(GLFactory.getInstance().newCoordinateSystem());
-		mesh2.addChild(GLFactory.getInstance().newCircle(
-				new Color(0, 0, 1, 0.6f)));
-		// mesh1.add(GLFactory.getInstance().newCube());
 
 	}
 
@@ -66,56 +56,93 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 	@Override
 	public void _a3_registerMarkerObjects(MarkerObjectMap markerObjectMap) {
-		markerObjectMap.put(new SimpleMeshPlacer(0, mesh1, camera));
-		markerObjectMap.put(new SimpleMeshPlacer(1, mesh2, camera));
 
-		/*
-		 * example for more complex behavior:
-		 */
-		markerObjectMap.put(new BasicMarker(2, camera) {
+        try {
+            List<BrightBox> all = BrightBoxController.getINSTANCE().findAll();
+            for(int i = 0;i<all.size();i++){
+                final BrightBox box = all.get(i);
+				Log.d("MARKER", "Add marker :" + box.getId());
 
-			MeshComponent targetMesh;
-			boolean firstTime = true;
+                markerObjectMap.put(new BasicMarker(box.getId(), camera) {
 
-			@Override
-			public void setObjectPos(Vec positionVec) {
+                    MeshComponent targetMesh;
+                    boolean firstTime = true;
+
+                    @Override
+                    public void setObjectPos(Vec positionVec) {
 				/*
 				 * the first time this method is called an object could be
 				 * created and added to the world
 				 */
-				if (firstTime) {
-					firstTime = false;
-					Obj aNewObject = new Obj();
-					targetMesh = GLFactory.getInstance().newArrow();
-					aNewObject.setComp(targetMesh);
-					world.add(aNewObject);
-				}
-				targetMesh.setPosition(positionVec);
-			}
+                        if (firstTime) {
+                            firstTime = false;
+                            Obj aNewObject = new Obj();
 
-			@Override
-			public void setObjRotation(float[] rotMatrix) {
-				if (targetMesh != null) {
-					targetMesh.setRotationMatrix(rotMatrix);
-				}
-			}
-		});
-	}
+                            try {
+                                List<SensorData> sensorDataList = SensorDataController.getINSTANCE().findByBrightBox(box);
+                                List<List<Integer>> data = new ArrayList<List<Integer>>();
+
+                                List<Integer> bloom = new ArrayList<>();
+                                List<Integer> vega = new ArrayList<>();
+                                List<Integer> grow = new ArrayList<>();
+                                List<Integer> air = new ArrayList<>();
+                                List<Integer> humidity = new ArrayList<>();
+                                List<Integer> ph = new ArrayList<>();
+                                List<Integer> ec = new ArrayList<>();
+                                List<Integer> water = new ArrayList<>();
+                                for(SensorData s : sensorDataList){
+                                    bloom.add(s.getBloom().intValue());
+                                    vega.add(s.getVega().intValue());
+                                    air.add(s.getAirTemperatur().intValue());
+                                    grow.add(s.getGrow().intValue());
+                                    humidity.add(s.getHumidity().intValue());
+                                    ph.add(s.getPhValue().intValue());
+                                    ec.add(s.getEcValue().intValue());
+                                    water.add(s.getWaterTemperatur().intValue());
+                                }
+                                data.add(bloom);
+                                data.add(vega);
+                                data.add(air);
+                                data.add(grow);
+                                data.add(humidity);
+                                data.add(ph);
+                                data.add(ec);
+                                data.add(water);
+
+                                targetMesh = SensorDataTableMesh.getMesh(data);
+                                aNewObject.setComp(targetMesh);
+                                world.add(aNewObject);
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                        targetMesh.setPosition(positionVec);
+                    }
+
+                    @Override
+                    public void setObjRotation(float[] rotMatrix) {
+                        if (targetMesh != null) {
+                            targetMesh.setRotationMatrix(rotMatrix);
+                        }
+                    }
+                });
+            }
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+}
 
 	@Override
 	public void _b_addWorldsToRenderer(GL1Renderer renderer,
 			GLFactory objectFactory, GeoObj currentPosition) {
 		renderer.addRenderElement(world);
-		Obj o = new Obj();
-		o.setComp(mesh1);
-		world.add(o);
-
-		Obj o2 = new Obj();
-		o2.setComp(mesh2);
-		world.add(o2);
-
-		world.add(objectFactory.newHexGroupTest(new Vec()));
-
 	}
 
 	@Override
@@ -139,26 +166,5 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 	@Override
 	public void _e2_addElementsToGuiSetup(GuiSetup guiSetup, Activity activity) {
-		guiSetup.addButtonToBottomView(new Command() {
-
-			@Override
-			public boolean execute() {
-
-				Vec rayPosition = new Vec();
-				Vec rayDirection = new Vec();
-				camera.getPickingRay(rayPosition, rayDirection,
-						GLRenderer.halfWidth, GLRenderer.halfHeight);
-
-				System.out.println("rayPosition=" + rayPosition);
-				System.out.println("rayDirection=" + rayDirection);
-
-				rayDirection.setLength(5);
-
-				mesh1.setPosition(rayPosition.add(rayDirection));
-
-				return false;
-			}
-		}, "Place 2 meters infront");
-
-	}
+		}
 }

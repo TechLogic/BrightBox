@@ -63,6 +63,8 @@ public class TriangulatedRenderData extends RenderData {
 
 	@Override
 	public void draw(GL10 gl) {
+
+        gl.glLineWidth(3f);
 		// Enabled the vertices buffer for writing and to be used during
 		// rendering.
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);

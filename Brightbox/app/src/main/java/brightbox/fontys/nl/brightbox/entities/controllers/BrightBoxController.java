@@ -31,7 +31,9 @@ import brightbox.fontys.nl.brightbox.entities.models.BrightBox;
 public class BrightBoxController{
 
     private static BrightBoxController INSTANCE = new BrightBoxController();
-    private final String  url = "http://brightbox.ddns.net:8000/api/bright_box";
+//    private final String  url = "http://brightbox.ddns.net:8000/api/bright_box";
+    private final String  url = "http://192.168.2.201:8000/api/bright_box";
+
     private Map<Integer,BrightBox> cache = new HashMap<>();
     private BrightBoxController(){
     }
@@ -41,7 +43,9 @@ public class BrightBoxController{
     }
 
     public List<BrightBox> findAll() throws ExecutionException, InterruptedException {
-        return new CallAPI().execute(url).get();
+        List<BrightBox> list = new CallAPI().execute(url).get();
+        Log.d("LIST","Brightbox findAll: " +list.size());
+        return list;
     }
 
     public BrightBox findById(int id) throws ExecutionException, InterruptedException {
@@ -143,6 +147,8 @@ public class BrightBoxController{
                     BrightBox box = new BrightBox(id,box_name,description,identifier);
                     cache.put(id,box);
                     list.add(box);
+                }else{
+                    Log.e("BRIGHTBOX","Could not parse BrightBox");
                 }
                 reader.endObject();
             }

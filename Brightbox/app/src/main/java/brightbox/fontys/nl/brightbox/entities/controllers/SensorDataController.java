@@ -35,7 +35,9 @@ public class SensorDataController{
 
 
     private static SensorDataController INSTANCE = new SensorDataController();
-    private final String  url = "http://brightbox.ddns.net:8000/api/sensor_data";
+//    private final String  url = "http://brightbox.ddns.net:8000/api/sensor_data";
+    private final String  url = "http://192.168.2.201:8000/api/sensor_data";
+
 
     private SensorDataController(){
     }
@@ -54,7 +56,7 @@ public class SensorDataController{
     }
 
     public List<SensorData> findByBrightBox(BrightBox box) throws ExecutionException, InterruptedException {
-       return new CallAPI().execute(url + "?fk_bright_box=" + box.getId()).get();
+       return new CallAPI().execute(url + "?fk_bright_box=" + box.getId()+"&_order[timestamp]=DESC").get();
     }
 
 
