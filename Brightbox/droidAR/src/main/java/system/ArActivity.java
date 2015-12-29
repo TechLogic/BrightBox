@@ -48,6 +48,7 @@ public class ArActivity extends Activity {
 		ArActivity.staticSetupHolder = setupToUse;
 		currentActivity.startActivity(new Intent(currentActivity,
 				ArActivity.class));
+
 	}
 
 	public static void startWithSetupForResult(Activity currentActivity,

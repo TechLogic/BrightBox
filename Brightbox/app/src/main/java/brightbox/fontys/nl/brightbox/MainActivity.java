@@ -1,19 +1,12 @@
 package brightbox.fontys.nl.brightbox;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import com.vuzix.hardware.GestureSensor;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import brightbox.fontys.nl.brightbox.entities.controllers.BrightBoxController;
-import brightbox.fontys.nl.brightbox.entities.controllers.SensorDataController;
-import brightbox.fontys.nl.brightbox.entities.models.SensorData;
+
 import brightbox.fontys.nl.brightbox.marker.MultiMarkerSetup;
 import system.ArActivity;
 import system.Setup;
@@ -23,28 +16,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Button b = generateStartButton(new MultiMarkerSetup());
+        GestureController c = new GestureController(getApplicationContext());
+        MultiMarkerSetup setup = new MultiMarkerSetup(c);
+
+
+        Button b = generateStartButton(setup);
         setContentView(b);
 
-       BrightBoxController controller = BrightBoxController.getINSTANCE();
-        try {
-            controller.findAll();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        SensorDataController sensorDataController = SensorDataController.getINSTANCE();
-        try {
-       List<SensorData> data =     sensorDataController.findAll();
-            Log.d("Test","Test");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     private Button generateStartButton(final Setup setup) {
         Button b = new Button(this);
@@ -82,40 +71,5 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class mySensor extends GestureSensor {
 
-        public mySensor(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected void onBackSwipe(int i) {
-
-        }
-
-        @Override
-        protected void onForwardSwipe(int i) {
-
-        }
-
-        @Override
-        protected void onUp(int i) {
-
-        }
-
-        @Override
-        protected void onDown(int i) {
-
-        }
-
-        @Override
-        protected void onNear() {
-
-        }
-
-        @Override
-        protected void onFar() {
-
-        }
-    }
 }
