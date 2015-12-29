@@ -1,7 +1,12 @@
 package brightbox.fontys.nl.brightbox.marker;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -79,7 +84,7 @@ public class MultiMarkerSetup extends MarkerDetectionSetup implements GestureLis
             for(int i = 0;i<all.size();i++){
                 final BrightBox box = all.get(i);
 				Log.d("MARKERADD", "Add marker :" + box.getId());
-                BrightBoxMarker marker = new BrightBoxMarker(box,camera,world);
+                BrightBoxMarker marker = new BrightBoxMarker(box,camera,world,getActivity());
                 markerList.add(marker);
                 markerObjectMap.put(marker);
             }
@@ -116,8 +121,15 @@ public class MultiMarkerSetup extends MarkerDetectionSetup implements GestureLis
 
 	}
 
+    private TextView text;
+
 	@Override
 	public void _e2_addElementsToGuiSetup(GuiSetup guiSetup, Activity activity) {
+         text = new TextView(activity);
+        SensorDataType type = filter[filterPosition];
+        text.setText(type.getName());
+        text.setTextColor(Color.WHITE);
+        guiSetup.getBottomView().addView(text);
 		}
 
 
@@ -130,6 +142,7 @@ public class MultiMarkerSetup extends MarkerDetectionSetup implements GestureLis
         for(BrightBoxMarker marker : markerList){
             marker.filterData(type);
         }
+        text.setText(type.getName());
     }
 
     @Override

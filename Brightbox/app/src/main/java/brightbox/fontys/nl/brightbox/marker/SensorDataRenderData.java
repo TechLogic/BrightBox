@@ -10,6 +10,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import brightbox.fontys.nl.brightbox.entities.models.SensorDataType;
 import gl.Color;
+import gl.GLFactory;
 import gl.GLUtilityClass;
 import gl.scenegraph.RenderData;
 import util.Vec;
@@ -103,10 +104,11 @@ public class SensorDataRenderData extends RenderData {
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
     }
 
+
+
     private void drawGraphs(GL10 gl){
 
         for(Map.Entry<SensorDataType,ShortBuffer> entry : graphIndex.entrySet()){
-
             Color color = entry.getKey().getColor();
             gl.glLineWidth(2f);
             gl.glColor4f(color.red, color.green,color.blue,color.alpha);

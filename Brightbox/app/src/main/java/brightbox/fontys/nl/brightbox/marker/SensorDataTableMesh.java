@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import brightbox.fontys.nl.brightbox.entities.models.SensorDataType;
 import gl.Color;
+import gl.GLFactory;
 import gl.scenegraph.MeshComponent;
 import gl.scenegraph.Shape;
+import util.Vec;
 
 public class SensorDataTableMesh {
 

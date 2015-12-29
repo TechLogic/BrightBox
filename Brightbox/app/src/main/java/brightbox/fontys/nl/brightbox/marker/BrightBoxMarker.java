@@ -1,5 +1,7 @@
 package brightbox.fontys.nl.brightbox.marker;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +13,7 @@ import brightbox.fontys.nl.brightbox.entities.models.BrightBox;
 import brightbox.fontys.nl.brightbox.entities.models.SensorData;
 import brightbox.fontys.nl.brightbox.entities.models.SensorDataType;
 import gl.GLCamera;
+import gl.GLFactory;
 import gl.scenegraph.MeshComponent;
 import util.Vec;
 import worldData.Obj;
@@ -37,13 +40,15 @@ public class BrightBoxMarker extends  BasicMarker {
     private List<Integer> water = new ArrayList<>();
 
     private Obj aNewObject;
+    private Context context;
 
 
-
-    public BrightBoxMarker(BrightBox box, GLCamera camera, World world) {
+    public BrightBoxMarker(BrightBox box, GLCamera camera, World world,Context context) {
         super(box.getId(), camera);
         this.box = box;
         this.world = world;
+        aNewObject = new Obj();
+        this.context = context;
     }
 
     @Override
@@ -54,11 +59,10 @@ public class BrightBoxMarker extends  BasicMarker {
 				 */
         if (firstTime) {
             firstTime = false;
-             aNewObject = new Obj();
 
             try {
                 List<SensorData> sensorDataList = SensorDataController.getINSTANCE().findByBrightBox(box);
-                for(SensorData s : sensorDataList){
+                for (SensorData s : sensorDataList) {
                     bloom.add(s.getBloom().intValue());
                     vega.add(s.getVega().intValue());
                     air.add(s.getAirTemperatur().intValue());
@@ -68,9 +72,18 @@ public class BrightBoxMarker extends  BasicMarker {
                     ec.add(s.getEcValue().intValue());
                     water.add(s.getWaterTemperatur().intValue());
                 }
-                targetMesh = SensorDataTableMesh.getMesh(createMap(SensorDataType.ALL));
+                targetMesh = SensorDataTableMesh.getMesh(createMap(actType));
                 aNewObject.setComp(targetMesh);
                 world.add(aNewObject);
+                for (int i = 0; i < 50; i += 5) {
+                    Vec v = Vec.add(new Vec(-6,0,i),positionVec);
+                    Obj o  =     GLFactory.getInstance().newTextObject(Integer.toString(i), v, context, myCamera);
+                    MeshComponent meshComp = o.getMeshComp();
+                    meshComp.setPosition(new Vec(0,0,0));
+//                    meshComp.setRotation(targetMesh.getRotation());
+                    targetMesh.addChild(meshComp);
+                }
+
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -79,6 +92,7 @@ public class BrightBoxMarker extends  BasicMarker {
 
 
         }
+        targetMesh.getRotation();
         targetMesh.setPosition(positionVec);
     }
 
@@ -148,7 +162,10 @@ public class BrightBoxMarker extends  BasicMarker {
     }
 
 
+    private SensorDataType actType = SensorDataType.ALL;
+
     public void filterData(SensorDataType type){
+        actType = type;
         targetMesh = SensorDataTableMesh.getMesh(createMap(type));
         aNewObject.setComp(targetMesh);
     }
