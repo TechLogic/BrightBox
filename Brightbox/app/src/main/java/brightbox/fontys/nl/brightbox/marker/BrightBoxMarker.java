@@ -1,6 +1,7 @@
 package brightbox.fontys.nl.brightbox.marker;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import gl.GLFactory;
 import gl.scenegraph.MeshComponent;
 import util.Vec;
 import worldData.Obj;
+import worldData.RenderableEntity;
 import worldData.World;
 
 /**
@@ -41,6 +43,7 @@ public class BrightBoxMarker extends  BasicMarker {
 
     private Obj aNewObject;
     private Context context;
+    private List<MeshComponent> textMeshes = new ArrayList<>();
 
 
     public BrightBoxMarker(BrightBox box, GLCamera camera, World world,Context context) {
@@ -73,16 +76,9 @@ public class BrightBoxMarker extends  BasicMarker {
                     water.add(s.getWaterTemperatur().intValue());
                 }
                 targetMesh = SensorDataTableMesh.getMesh(createMap(actType));
+                addXAxisValues();
                 aNewObject.setComp(targetMesh);
                 world.add(aNewObject);
-                for (int i = 0; i < 50; i += 5) {
-                    Vec v = Vec.add(new Vec(-6,0,i),positionVec);
-                    Obj o  =     GLFactory.getInstance().newTextObject(Integer.toString(i), v, context, myCamera);
-                    MeshComponent meshComp = o.getMeshComp();
-                    meshComp.setPosition(new Vec(0,0,0));
-//                    meshComp.setRotation(targetMesh.getRotation());
-                    targetMesh.addChild(meshComp);
-                }
 
             } catch (ExecutionException e) {
                 e.printStackTrace();
@@ -96,10 +92,30 @@ public class BrightBoxMarker extends  BasicMarker {
         targetMesh.setPosition(positionVec);
     }
 
+
+    private void addXAxisValues(){
+        for (int i = 0; i < 55; i += 5) {
+            MeshComponent mesh =   TextMesh.createTextMesh(context, Integer.toString(i));
+            textMeshes.add(mesh);
+            mesh.setPosition(new Vec(-6.1f,(i/10f)+0.05f,0.2f));
+            targetMesh.addChild(mesh);
+        }
+
+    }
+
     @Override
     public void setObjRotation(float[] rotMatrix) {
         if (targetMesh != null) {
             targetMesh.setRotationMatrix(rotMatrix);
+        }
+        String s = "";
+        for(float f : rotMatrix){
+            s+= ", "+ Float.toString(f);
+        }
+         Log.d("ROTATIONMATRIX", s);
+        for(MeshComponent mesh : textMeshes){
+            mesh.setRotationMatrix(rotMatrix);
+
         }
     }
 
@@ -167,6 +183,7 @@ public class BrightBoxMarker extends  BasicMarker {
     public void filterData(SensorDataType type){
         actType = type;
         targetMesh = SensorDataTableMesh.getMesh(createMap(type));
+        addXAxisValues();
         aNewObject.setComp(targetMesh);
     }
 

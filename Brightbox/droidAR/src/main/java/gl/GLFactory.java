@@ -602,14 +602,14 @@ public class GLFactory {
 		TextView v = new TextView(context);
 		v.setTypeface(null, Typeface.BOLD);
 		// Set textcolor to black:
-		// v.setTextColor(new Color(0, 0, 0, 1).toIntARGB());
+		v.setTextColor(new Color(0, 0, 0, 1).toIntARGB());
 		v.setText(textToDisplay);
 
 		Obj o = new Obj();
 		MeshComponent mesh = this.newTexturedSquare("textBitmap"
 				+ textToDisplay, util.IO.loadBitmapFromView(v), textSize);
 		mesh.setPosition(textPosition);
-		mesh.addAnimation(new AnimationFaceToCamera(glCamera));
+		//mesh.addAnimation(new AnimationFaceToCamera(glCamera));
 		o.setComp(mesh);
 		return o;
 	}

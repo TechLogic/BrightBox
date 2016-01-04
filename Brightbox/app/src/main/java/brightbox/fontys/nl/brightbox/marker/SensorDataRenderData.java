@@ -26,6 +26,7 @@ public class SensorDataRenderData extends RenderData {
 
     public SensorDataRenderData() {
         graphIndex = new HashMap<>();
+        setDrawModeToLines();
     }
 
     @Override
@@ -80,7 +81,7 @@ public class SensorDataRenderData extends RenderData {
 
     @Override
     public void draw(GL10 gl) {
-
+        gl.glDisable(GL10.GL_LIGHTING);
         gl.glLineWidth(3f);
         // Enabled the vertices buffer for writing and to be used during
         // rendering.
@@ -91,8 +92,8 @@ public class SensorDataRenderData extends RenderData {
 
         if (normalsBuffer != null) {
             // Enable normals array (for lightning):
-            gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
-            gl.glNormalPointer(GL10.GL_FLOAT, 0, normalsBuffer);
+           // gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
+           // gl.glNormalPointer(GL10.GL_FLOAT, 0, normalsBuffer);
         }
 
         gl.glDrawElements(drawMode, indexBuffer.limit(),
@@ -102,6 +103,7 @@ public class SensorDataRenderData extends RenderData {
 
         // Disable the vertices buffer.
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+
     }
 
 
