@@ -127,8 +127,10 @@ public class MultiMarkerSetup extends MarkerDetectionSetup implements GestureLis
 	public void _e2_addElementsToGuiSetup(GuiSetup guiSetup, Activity activity) {
          text = new TextView(activity);
         SensorDataType type = filter[filterPosition];
-        text.setText(type.getName());
-        text.setTextColor(Color.WHITE);
+        text.setText(type.getName()+ " ");
+        text.setTextSize(25);
+        text.setBackgroundColor(Color.argb(75,255,255,255));
+        text.setTextColor(Color.RED);
         guiSetup.getBottomView().addView(text);
 		}
 
