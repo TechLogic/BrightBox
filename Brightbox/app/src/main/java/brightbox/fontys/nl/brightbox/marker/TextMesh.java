@@ -25,7 +25,7 @@ public class TextMesh {
         TextView v = new TextView(context);
         v.setTypeface(null, Typeface.BOLD);
         // Set textcolor to black:
-        v.setTextColor(new Color(0, 0, 0, 1).toIntARGB());
+        v.setTextColor(new Color(1, 1, 1, 1).toIntARGB());
         v.setText(textToDisplay);
 
         MeshComponent mesh = newTexturedSquare("textBitmap"

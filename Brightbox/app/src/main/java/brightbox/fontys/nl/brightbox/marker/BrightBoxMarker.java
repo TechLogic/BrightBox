@@ -40,7 +40,7 @@ public class BrightBoxMarker extends  BasicMarker {
     private List<Integer> ph = new ArrayList<>();
     private List<Integer> ec = new ArrayList<>();
     private List<Integer> water = new ArrayList<>();
-
+    private List<String> timestamps = new ArrayList<>();
     private Obj aNewObject;
     private Context context;
     private List<MeshComponent> textMeshes = new ArrayList<>();
@@ -74,9 +74,11 @@ public class BrightBoxMarker extends  BasicMarker {
                     ph.add(s.getPhValue().intValue());
                     ec.add(s.getEcValue().intValue());
                     water.add(s.getWaterTemperatur().intValue());
+                    timestamps.add(s.getTimestamp().toString());
                 }
                 targetMesh = SensorDataTableMesh.getMesh(createMap(actType));
                 addXAxisValues();
+                addYAxisValues(timestamps.toArray(new String[0]));
                 aNewObject.setComp(targetMesh);
                 world.add(aNewObject);
 
@@ -97,11 +99,61 @@ public class BrightBoxMarker extends  BasicMarker {
         for (int i = 0; i < 55; i += 5) {
             MeshComponent mesh =   TextMesh.createTextMesh(context, Integer.toString(i));
             textMeshes.add(mesh);
-            mesh.setPosition(new Vec(-6.1f,(i/10f)+0.05f,0.2f));
+            mesh.setPosition(new Vec(-6.1f, (i / 10f) + 0.5f, 0.2f));
             targetMesh.addChild(mesh);
+
+
+            float zAngle = 85;
+            float xAngle = -92.5f;
+            float yAngle = 0;
+
+
+            float xCos =(float)(Math.cos(xAngle));
+            float xSin = (float)(Math.sin(xAngle));
+            float yCos =(float)(Math.cos(yAngle));
+            float ySin = (float)(Math.sin(yAngle));
+            float zCos =(float)(Math.cos(zAngle));
+            float zSin = (float)(Math.sin(zAngle));
+            float[] rotMatrix = {yCos*zCos,zCos*xSin*ySin - xCos*zSin, xCos*zCos*ySin+xSin*zSin  ,0,
+                                 yCos*zSin,xCos*zCos+xSin*ySin*zSin  , -zCos*xSin+xCos*ySin*zSin ,0,
+                                 -ySin    ,yCos*xSin                 , xCos*yCos                 ,0,
+                                 0        ,0                         ,0                          ,1};
+            mesh.setRotationMatrix(rotMatrix);
+
         }
 
     }
+
+    private void addYAxisValues(String[] timestamps) {
+        for (int i = 0; i < timestamps.length; i++) {
+            MeshComponent mesh = TextMesh.createTextMesh(context, timestamps[i]);
+            textMeshes.add(mesh);
+            mesh.setPosition(new Vec(i-5f,-1.1f, 0.2f));
+            targetMesh.addChild(mesh);
+
+
+            float zAngle = 85;
+            float xAngle = -92.5f;
+            float yAngle = -45f;
+
+
+            float xCos = (float) (Math.cos(xAngle));
+            float xSin = (float) (Math.sin(xAngle));
+            float yCos = (float) (Math.cos(yAngle));
+            float ySin = (float) (Math.sin(yAngle));
+            float zCos = (float) (Math.cos(zAngle));
+            float zSin = (float) (Math.sin(zAngle));
+            float[] rotMatrix = {yCos * zCos, zCos * xSin * ySin - xCos * zSin, xCos * zCos * ySin + xSin * zSin, 0,
+                    yCos * zSin, xCos * zCos + xSin * ySin * zSin, -zCos * xSin + xCos * ySin * zSin, 0,
+                    -ySin, yCos * xSin, xCos * yCos, 0,
+                    0, 0, 0, 1};
+            mesh.setRotationMatrix(rotMatrix);
+
+        }
+    }
+
+
+        private float[] lastRotMatrix;
 
     @Override
     public void setObjRotation(float[] rotMatrix) {
@@ -112,11 +164,8 @@ public class BrightBoxMarker extends  BasicMarker {
         for(float f : rotMatrix){
             s+= ", "+ Float.toString(f);
         }
-         Log.d("ROTATIONMATRIX", s);
-        for(MeshComponent mesh : textMeshes){
-            mesh.setRotationMatrix(rotMatrix);
 
-        }
+        lastRotMatrix = rotMatrix;
     }
 
 
@@ -182,8 +231,12 @@ public class BrightBoxMarker extends  BasicMarker {
 
     public void filterData(SensorDataType type){
         actType = type;
+        Vec  pos = targetMesh.getPosition();
         targetMesh = SensorDataTableMesh.getMesh(createMap(type));
+        targetMesh.setPosition(pos);
+        targetMesh.setRotationMatrix(lastRotMatrix);
         addXAxisValues();
+        addYAxisValues(timestamps.toArray(new String[0]));
         aNewObject.setComp(targetMesh);
     }
 
